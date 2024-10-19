@@ -24,11 +24,15 @@ public class CharacterController : MonoBehaviour
     [SerializeField] PlayerInput playerInput;
     [SerializeField] FoxControls foxControls;
     FoxInputHandler foxInputHandler;
+    [SerializeField] Collider noiseCollider;
     [Header("Settings")]
     [SerializeField] float speedMultiplier;
     [SerializeField] float walkSpeed;
     [SerializeField] float crouchSpeed;
     [SerializeField] float sprintSpeed;
+    [SerializeField] float walkNoiseRadius;
+    [SerializeField] float crouchNoiseRadius;
+    [SerializeField] float sprintNoiseRadius;
 
     private void Awake()
     {
@@ -91,14 +95,17 @@ public class CharacterController : MonoBehaviour
             if (isSneaking)
             {
                 speedMultiplier = crouchSpeed;
+                noiseCollider.GetComponent<SphereCollider>().radius = crouchNoiseRadius;
             }
             else if (isSprint)
             {
                 speedMultiplier = sprintSpeed;
+                noiseCollider.GetComponent<SphereCollider>().radius = sprintNoiseRadius;
             }
             else
             {
                 speedMultiplier = walkSpeed;
+                noiseCollider.GetComponent<SphereCollider>().radius = walkNoiseRadius;
             }
             foxRB.linearVelocity = new Vector3(moveDirection.x * speedMultiplier, 0, moveDirection.z * speedMultiplier);
         }
