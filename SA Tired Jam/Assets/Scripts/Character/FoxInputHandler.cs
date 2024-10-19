@@ -71,6 +71,7 @@ public class FoxInputHandler
         if (context.ReadValue<Vector2>().normalized != Vector2.zero)
         {
             moveInput = context.ReadValue<Vector2>().normalized;
+            Debug.Log("Move");
         }
         if (context.ReadValue<Vector2>().normalized == Vector2.zero)
         {
@@ -82,6 +83,7 @@ public class FoxInputHandler
     {
         crouch = true;
         OnCrouchPerformed?.Invoke(crouch);
+        Debug.Log("Crouch");
     }
     private static void CrouchCanceled(InputAction.CallbackContext context)
     {
@@ -92,6 +94,7 @@ public class FoxInputHandler
     {
         interact = true;
         OnInteractPerformed?.Invoke(interact);
+        Debug.Log("Interact");
     }
     private static void InteractCanceled(InputAction.CallbackContext context)
     {
