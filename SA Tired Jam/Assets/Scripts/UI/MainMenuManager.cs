@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 
-public class UIManager : MonoBehaviour
+public class MainMenuManager : MonoBehaviour
 {
+    public static MainMenuManager instance;
     [Header("Debug")]
     [SerializeField] bool check;
 
@@ -22,6 +23,7 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        instance = this;
         mainMenuCanvas.enabled = true;
         controlsCanvas.enabled = false;
         creditsCanvas.enabled = false;

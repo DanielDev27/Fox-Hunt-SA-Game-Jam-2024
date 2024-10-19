@@ -71,7 +71,7 @@ public class FoxInputHandler
         if (context.ReadValue<Vector2>().normalized != Vector2.zero)
         {
             moveInput = context.ReadValue<Vector2>().normalized;
-            Debug.Log("Move");
+            //Debug.Log("Move");
         }
         if (context.ReadValue<Vector2>().normalized == Vector2.zero)
         {

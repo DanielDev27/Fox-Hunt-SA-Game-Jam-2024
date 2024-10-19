@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class CharacterController : MonoBehaviour
 {
     public static CharacterController instance;
     [Header("Debug")]
-    [SerializeField] bool Paused = false;
+    [SerializeField] bool paused = false;
     [SerializeField] Vector2 moveInput;
     [SerializeField] Vector3 moveDirection;
     [SerializeField] bool isMoving;
@@ -44,6 +45,10 @@ public class CharacterController : MonoBehaviour
             foxControls = FoxInputHandler.foxControls;
         }
     }
+    private void Start()
+    {
+        PauseScript.Instance.pauseEvent.AddListener(OnPause);
+    }
 
     public void OnEnable()
     {
@@ -55,13 +60,13 @@ public class CharacterController : MonoBehaviour
     }
     public void OnDisable()
     {
-        FoxInputHandler.OnMovePerformed.AddListener(InputMove);
-        FoxInputHandler.OnCrouchPerformed.AddListener(OnCrouch);
-        FoxInputHandler.OnInteractPerformed.AddListener(OnInteract);
+        FoxInputHandler.OnMovePerformed.RemoveListener(InputMove);
+        FoxInputHandler.OnCrouchPerformed.RemoveListener(OnCrouch);
+        FoxInputHandler.OnInteractPerformed.RemoveListener(OnInteract);
     }
     void OnDestroy()
     {
-
+        PauseScript.Instance.pauseEvent.RemoveListener(OnPause);
     }
 
     private void Update()
@@ -117,4 +122,20 @@ public class CharacterController : MonoBehaviour
     {
         this.isInteract = _interact;
     }
+
+    private void OnPause(bool _isPaused)
+    {
+        this.paused = _isPaused;
+        if (paused)
+        {
+            isMoving = false;
+            moveInput = Vector2.zero;
+            OnDisable();
+        }
+        else
+        {
+            OnEnable();
+        }
+    }
+
 }
