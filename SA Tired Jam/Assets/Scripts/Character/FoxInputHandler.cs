@@ -8,11 +8,13 @@ public class FoxInputHandler
     //Events
     public static UnityEvent<Vector2> OnMovePerformed = new UnityEvent<Vector2>();
     public static UnityEvent<bool> OnCrouchPerformed = new UnityEvent<bool>();
+    public static UnityEvent<bool> OnSprintPerformed = new UnityEvent<bool>();
     public static UnityEvent<bool> OnInteractPerformed = new UnityEvent<bool>();
     public static UnityEvent<bool> OnPausePerformed = new UnityEvent<bool>();
     //Values
     public static Vector2 moveInput;
     public static bool crouch = false;
+    public static bool sprint = false;
     public static bool interact = false;
     public static bool pause = false;
     //
@@ -62,6 +64,9 @@ public class FoxInputHandler
         //Crouch
         foxControls.Player.Crouch.performed += CrouchPerformed;
         foxControls.Player.Crouch.canceled += CrouchCanceled;
+        //Sprint
+        foxControls.Player.Sprint.performed += SprintPerformed;
+        foxControls.Player.Sprint.canceled += SprintCanceled;
         //Interact
         foxControls.Player.Interact.performed += InteractPerformed;
         foxControls.Player.Interact.canceled += InteractCanceled;
@@ -89,6 +94,17 @@ public class FoxInputHandler
     {
         crouch = false;
         OnCrouchPerformed?.Invoke(crouch);
+    }
+    private static void SprintPerformed(InputAction.CallbackContext context)
+    {
+        sprint = true;
+        OnSprintPerformed?.Invoke(sprint);
+        Debug.Log("Sprint");
+    }
+    private static void SprintCanceled(InputAction.CallbackContext context)
+    {
+        sprint = false;
+        OnSprintPerformed?.Invoke(sprint);
     }
     private static void InteractPerformed(InputAction.CallbackContext context)
     {

@@ -13,6 +13,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] Vector3 moveDirection;
     [SerializeField] bool isMoving;
     [SerializeField] bool isSneaking;
+    [SerializeField] bool isSprint;
     [SerializeField] bool isInteract;
     public float Health;
 
@@ -27,6 +28,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] float speedMultiplier;
     [SerializeField] float walkSpeed;
     [SerializeField] float crouchSpeed;
+    [SerializeField] float sprintSpeed;
 
     private void Awake()
     {
@@ -56,12 +58,14 @@ public class CharacterController : MonoBehaviour
         Debug.Log("Initialized");
         FoxInputHandler.OnMovePerformed.AddListener(InputMove);
         FoxInputHandler.OnCrouchPerformed.AddListener(OnCrouch);
+        FoxInputHandler.OnSprintPerformed.AddListener(OnSprint);
         FoxInputHandler.OnInteractPerformed.AddListener(OnInteract);
     }
     public void OnDisable()
     {
         FoxInputHandler.OnMovePerformed.RemoveListener(InputMove);
         FoxInputHandler.OnCrouchPerformed.RemoveListener(OnCrouch);
+        FoxInputHandler.OnSprintPerformed.RemoveListener(OnSprint);
         FoxInputHandler.OnInteractPerformed.RemoveListener(OnInteract);
     }
     void OnDestroy()
@@ -87,6 +91,10 @@ public class CharacterController : MonoBehaviour
             if (isSneaking)
             {
                 speedMultiplier = crouchSpeed;
+            }
+            else if (isSprint)
+            {
+                speedMultiplier = sprintSpeed;
             }
             else
             {
@@ -117,6 +125,10 @@ public class CharacterController : MonoBehaviour
     void OnCrouch(bool _sneaking)
     {
         this.isSneaking = _sneaking;
+    }
+    void OnSprint(bool _isSprint)
+    {
+        this.isSprint = _isSprint;
     }
     void OnInteract(bool _interact)
     {
