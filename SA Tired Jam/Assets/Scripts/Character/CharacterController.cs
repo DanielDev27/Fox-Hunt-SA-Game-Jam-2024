@@ -9,7 +9,7 @@ public class CharacterController : MonoBehaviour
     [Header("Debug")]
     [SerializeField] bool Paused = false;
     [SerializeField] Vector2 moveInput;
-    [SerializeField] Vector3 MoveDirection;
+    [SerializeField] Vector3 moveDirection;
     [SerializeField] bool isMoving;
     [SerializeField] bool isSneaking;
     [SerializeField] bool isInteract;
@@ -68,7 +68,30 @@ public class CharacterController : MonoBehaviour
     {
         if (moveInput != Vector2.zero)
         {
+            OnPlayerMove();
+        }
+    }
 
+    //Movement
+    public void OnPlayerMove()
+    {
+        Vector3 moveCombined = new Vector3(moveInput.x, 0, moveInput.y);
+        moveDirection = moveCombined.normalized;
+        if (moveCombined != Vector3.zero)
+        {
+            foxRB.linearVelocity = new Vector3(moveDirection.x * speedMultiplier, 0, moveDirection.z * speedMultiplier);
+            if (isSneaking)
+            {
+                speedMultiplier = crouchSpeed;
+            }
+            else
+            {
+                speedMultiplier = walkSpeed;
+            }
+        }
+        else
+        {
+            foxRB.linearVelocity = Vector3.zero;
         }
     }
 
