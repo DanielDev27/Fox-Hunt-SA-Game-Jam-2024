@@ -707,10 +707,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2090509588}
-  - component: {fileID: 2090509589}
-  - component: {fileID: 2090509590}
   - component: {fileID: 2090509592}
   - component: {fileID: 2090509591}
+  - component: {fileID: 2090509589}
+  - component: {fileID: 2090509590}
   m_Layer: 6
   m_Name: Character
   m_TagString: Untagged
