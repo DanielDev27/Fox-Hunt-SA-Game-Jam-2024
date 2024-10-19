@@ -199,6 +199,54 @@ public partial class @FoxControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""InputDetection"",
+            ""id"": ""db51b68d-59a0-4a43-8b11-05d06b2289f6"",
+            ""actions"": [
+                {
+                    ""name"": ""Gamepad"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""4aedaca3-aab2-41de-b2c9-849e802ab266"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseKeyboard"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""bc22c9c6-7f64-4279-a9aa-8e20580fc4c2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""0fa8b037-b6bb-4c61-9f28-7d58b09dd362"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Gamepad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b9150a03-b264-4850-a30c-5420963649df"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseKeyboard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -248,11 +296,16 @@ public partial class @FoxControls: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        // InputDetection
+        m_InputDetection = asset.FindActionMap("InputDetection", throwIfNotFound: true);
+        m_InputDetection_Gamepad = m_InputDetection.FindAction("Gamepad", throwIfNotFound: true);
+        m_InputDetection_MouseKeyboard = m_InputDetection.FindAction("MouseKeyboard", throwIfNotFound: true);
     }
 
     ~@FoxControls()
     {
         Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, FoxControls.Player.Disable() has not been called.");
+        Debug.Assert(!m_InputDetection.enabled, "This will cause a leak and performance issues, FoxControls.InputDetection.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -380,6 +433,60 @@ public partial class @FoxControls: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // InputDetection
+    private readonly InputActionMap m_InputDetection;
+    private List<IInputDetectionActions> m_InputDetectionActionsCallbackInterfaces = new List<IInputDetectionActions>();
+    private readonly InputAction m_InputDetection_Gamepad;
+    private readonly InputAction m_InputDetection_MouseKeyboard;
+    public struct InputDetectionActions
+    {
+        private @FoxControls m_Wrapper;
+        public InputDetectionActions(@FoxControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Gamepad => m_Wrapper.m_InputDetection_Gamepad;
+        public InputAction @MouseKeyboard => m_Wrapper.m_InputDetection_MouseKeyboard;
+        public InputActionMap Get() { return m_Wrapper.m_InputDetection; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InputDetectionActions set) { return set.Get(); }
+        public void AddCallbacks(IInputDetectionActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InputDetectionActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InputDetectionActionsCallbackInterfaces.Add(instance);
+            @Gamepad.started += instance.OnGamepad;
+            @Gamepad.performed += instance.OnGamepad;
+            @Gamepad.canceled += instance.OnGamepad;
+            @MouseKeyboard.started += instance.OnMouseKeyboard;
+            @MouseKeyboard.performed += instance.OnMouseKeyboard;
+            @MouseKeyboard.canceled += instance.OnMouseKeyboard;
+        }
+
+        private void UnregisterCallbacks(IInputDetectionActions instance)
+        {
+            @Gamepad.started -= instance.OnGamepad;
+            @Gamepad.performed -= instance.OnGamepad;
+            @Gamepad.canceled -= instance.OnGamepad;
+            @MouseKeyboard.started -= instance.OnMouseKeyboard;
+            @MouseKeyboard.performed -= instance.OnMouseKeyboard;
+            @MouseKeyboard.canceled -= instance.OnMouseKeyboard;
+        }
+
+        public void RemoveCallbacks(IInputDetectionActions instance)
+        {
+            if (m_Wrapper.m_InputDetectionActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInputDetectionActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InputDetectionActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InputDetectionActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InputDetectionActions @InputDetection => new InputDetectionActions(this);
     private int m_GamepadSchemeIndex = -1;
     public InputControlScheme GamepadScheme
     {
@@ -413,5 +520,10 @@ public partial class @FoxControls: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+    }
+    public interface IInputDetectionActions
+    {
+        void OnGamepad(InputAction.CallbackContext context);
+        void OnMouseKeyboard(InputAction.CallbackContext context);
     }
 }

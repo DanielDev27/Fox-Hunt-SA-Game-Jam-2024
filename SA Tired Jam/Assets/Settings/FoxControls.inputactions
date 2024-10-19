@@ -176,6 +176,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "InputDetection",
+            "id": "db51b68d-59a0-4a43-8b11-05d06b2289f6",
+            "actions": [
+                {
+                    "name": "Gamepad",
+                    "type": "PassThrough",
+                    "id": "4aedaca3-aab2-41de-b2c9-849e802ab266",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MouseKeyboard",
+                    "type": "PassThrough",
+                    "id": "bc22c9c6-7f64-4279-a9aa-8e20580fc4c2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0fa8b037-b6bb-4c61-9f28-7d58b09dd362",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gamepad",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b9150a03-b264-4850-a30c-5420963649df",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseKeyboard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
