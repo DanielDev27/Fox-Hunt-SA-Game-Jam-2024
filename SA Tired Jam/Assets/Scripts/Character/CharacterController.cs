@@ -159,10 +159,12 @@ public class CharacterController : MonoBehaviour
             {
                 Debug.Log("Fox is entering Chicken Coup");
                 isInCoup = true;
+                chickenCoup[0].gameObject.GetComponent<ChickenCoup>().BeginCoupNoise();
             }
             else
             {
                 Debug.Log("Fox is exiting Chicken Coup");
+                chickenCoup[0].gameObject.GetComponent<ChickenCoup>().EndCoupNoise();
                 isInCoup = false;
             }
         }
