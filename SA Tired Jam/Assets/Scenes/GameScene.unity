@@ -250,7 +250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TrackerSettings:
     BindingMode: 4
-    PositionDamping: {x: 1, y: 1, z: 1}
+    PositionDamping: {x: 0.1, y: 0.1, z: 0.1}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
@@ -711,7 +711,7 @@ GameObject:
   - component: {fileID: 2090509590}
   - component: {fileID: 2090509592}
   - component: {fileID: 2090509591}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -759,8 +759,8 @@ MonoBehaviour:
   foxAnim: {fileID: 0}
   playerInput: {fileID: 2090509590}
   speedMultiplier: 0
-  walkSpeed: 1
-  crouchSpeed: 0.5
+  walkSpeed: 5
+  crouchSpeed: 2.5
 --- !u!114 &2090509590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -838,9 +838,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2090509587}
   serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 20
+  m_Drag: 2
+  m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

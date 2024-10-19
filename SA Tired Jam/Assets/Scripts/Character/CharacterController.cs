@@ -91,6 +91,7 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
+            speedMultiplier = 0;
             foxRB.linearVelocity = Vector3.zero;
         }
     }
