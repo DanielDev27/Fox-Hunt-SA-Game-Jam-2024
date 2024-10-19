@@ -1758,25 +1758,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paused: 0
-  moveInput: {x: 0, y: 0}
-  moveDirection: {x: 0, y: 0, z: 0}
-  isMoving: 0
-  isSneaking: 0
-  isSprint: 0
+  speedMultiplier: 0
+  isTrapped: 0
   isInteract: 0
+  isInCoup: 0
+  chickenCoup: []
   Health: 0
   foxRB: {fileID: 2090509592}
   foxGO: {fileID: 2090509587}
   foxAnim: {fileID: 0}
   playerInput: {fileID: 2090509590}
   noiseCollider: {fileID: 1144852089}
-  speedMultiplier: 0
   walkSpeed: 5
   crouchSpeed: 2.5
   sprintSpeed: 10
+  trapSpeed: 1.5
   walkNoiseRadius: 4
   crouchNoiseRadius: 2
   sprintNoiseRadius: 10
+  trapNoiseRadius: 12
 --- !u!114 &2090509590
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -88,7 +88,7 @@ public class FoxInputHandler
     {
         crouch = true;
         OnCrouchPerformed?.Invoke(crouch);
-        Debug.Log("Crouch");
+        //Debug.Log("Crouch");
     }
     private static void CrouchCanceled(InputAction.CallbackContext context)
     {
@@ -99,7 +99,7 @@ public class FoxInputHandler
     {
         sprint = true;
         OnSprintPerformed?.Invoke(sprint);
-        Debug.Log("Sprint");
+        //Debug.Log("Sprint");
     }
     private static void SprintCanceled(InputAction.CallbackContext context)
     {
@@ -110,7 +110,7 @@ public class FoxInputHandler
     {
         interact = true;
         OnInteractPerformed?.Invoke(interact);
-        Debug.Log("Interact");
+        //Debug.Log("Interact");
     }
     private static void InteractCanceled(InputAction.CallbackContext context)
     {

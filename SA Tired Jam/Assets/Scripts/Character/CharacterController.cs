@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -9,12 +10,16 @@ public class CharacterController : MonoBehaviour
     public static CharacterController instance;
     [Header("Debug")]
     [SerializeField] bool paused = false;
-    [SerializeField] Vector2 moveInput;
-    [SerializeField] Vector3 moveDirection;
-    [SerializeField] bool isMoving;
-    [SerializeField] bool isSneaking;
-    [SerializeField] bool isSprint;
+    private Vector2 moveInput;
+    private Vector3 moveDirection;
+    [SerializeField] float speedMultiplier;
+    private bool isMoving;
+    private bool isSneaking;
+    private bool isSprint;
+    [SerializeField] bool isTrapped = false;
     [SerializeField] bool isInteract;
+    [SerializeField] bool isInCoup = false;
+    [SerializeField] List<GameObject> chickenCoup = new List<GameObject>();
     public float Health;
 
     [Header("References")]
@@ -26,13 +31,14 @@ public class CharacterController : MonoBehaviour
     FoxInputHandler foxInputHandler;
     [SerializeField] Collider noiseCollider;
     [Header("Settings")]
-    [SerializeField] float speedMultiplier;
     [SerializeField] float walkSpeed;
     [SerializeField] float crouchSpeed;
     [SerializeField] float sprintSpeed;
+    [SerializeField] float trapSpeed;
     [SerializeField] float walkNoiseRadius;
     [SerializeField] float crouchNoiseRadius;
     [SerializeField] float sprintNoiseRadius;
+    [SerializeField] float trapNoiseRadius;
 
     private void Awake()
     {
@@ -59,7 +65,7 @@ public class CharacterController : MonoBehaviour
     public void OnEnable()
     {
         FoxInputHandler.Enable();
-        Debug.Log("Initialized");
+        //Debug.Log("Initialized");
         FoxInputHandler.OnMovePerformed.AddListener(InputMove);
         FoxInputHandler.OnCrouchPerformed.AddListener(OnCrouch);
         FoxInputHandler.OnSprintPerformed.AddListener(OnSprint);
@@ -90,7 +96,7 @@ public class CharacterController : MonoBehaviour
     {
         Vector3 moveCombined = new Vector3(moveInput.x, 0, moveInput.y);
         moveDirection = moveCombined.normalized;
-        if (moveCombined != Vector3.zero)
+        if (moveCombined != Vector3.zero && !isTrapped)
         {
             if (isSneaking)
             {
@@ -109,10 +115,17 @@ public class CharacterController : MonoBehaviour
             }
             foxRB.linearVelocity = new Vector3(moveDirection.x * speedMultiplier, 0, moveDirection.z * speedMultiplier);
         }
+        else if (isTrapped)
+        {
+            speedMultiplier = trapSpeed;
+            noiseCollider.GetComponent<SphereCollider>().radius = trapNoiseRadius;
+            foxRB.linearVelocity = new Vector3(moveDirection.x * speedMultiplier, 0, moveDirection.z * speedMultiplier);
+        }
         else
         {
             speedMultiplier = 0;
             foxRB.linearVelocity = Vector3.zero;
+            noiseCollider.GetComponent<SphereCollider>().radius = 1;
         }
     }
 
@@ -140,6 +153,23 @@ public class CharacterController : MonoBehaviour
     void OnInteract(bool _interact)
     {
         this.isInteract = _interact;
+        if (isInteract && chickenCoup.Count > 0 && chickenCoup[0] != null)
+        {
+            if (!isInCoup)
+            {
+                Debug.Log("Fox is entering Chicken Coup");
+                isInCoup = true;
+            }
+            else
+            {
+                Debug.Log("Fox is exiting Chicken Coup");
+                isInCoup = false;
+            }
+        }
+        else if (isInteract && chickenCoup.Count == 0)
+        {
+            Debug.Log("There is nothing to interact with");
+        }
     }
 
     private void OnPause(bool _isPaused)
@@ -156,15 +186,38 @@ public class CharacterController : MonoBehaviour
             OnEnable();
         }
     }
+
+    //Colliders and Triggers
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 7)
         {
             Debug.Log("Fox has entered into a trap");
+            //Trap needs to affect the Player's speed for X time
+            StartCoroutine(Trapped());
         }
         if (other.gameObject.layer == 9)
         {
             Debug.Log("Fox is close to a Chicken Coup");
+            //Character needs to recognize that there's a Chicken Coup, and can interact with it
+            chickenCoup.Add(other.gameObject);
         }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 9)
+        {
+            Debug.Log("Fox has left a Chicken Coup");
+            //Character needs to recognize that there's a Chicken Coup, and can interact with it
+            chickenCoup.Remove(other.gameObject);
+        }
+    }
+
+    //Coroutines
+    IEnumerator Trapped()
+    {
+        isTrapped = true;
+        yield return new WaitForSeconds(5);
+        isTrapped = false;
     }
 }
