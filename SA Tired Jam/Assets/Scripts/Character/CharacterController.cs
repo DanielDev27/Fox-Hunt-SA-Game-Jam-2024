@@ -84,7 +84,6 @@ public class CharacterController : MonoBehaviour
         moveDirection = moveCombined.normalized;
         if (moveCombined != Vector3.zero)
         {
-            foxRB.linearVelocity = new Vector3(moveDirection.x * speedMultiplier, 0, moveDirection.z * speedMultiplier);
             if (isSneaking)
             {
                 speedMultiplier = crouchSpeed;
@@ -93,6 +92,7 @@ public class CharacterController : MonoBehaviour
             {
                 speedMultiplier = walkSpeed;
             }
+            foxRB.linearVelocity = new Vector3(moveDirection.x * speedMultiplier, 0, moveDirection.z * speedMultiplier);
         }
         else
         {
