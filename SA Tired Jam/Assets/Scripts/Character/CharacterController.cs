@@ -149,5 +149,15 @@ public class CharacterController : MonoBehaviour
             OnEnable();
         }
     }
-
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 7)
+        {
+            Debug.Log("Fox has entered into a trap");
+        }
+        if (other.gameObject.layer == 9)
+        {
+            Debug.Log("Fox is close to a Chicken Coup");
+        }
+    }
 }
