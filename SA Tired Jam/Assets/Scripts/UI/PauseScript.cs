@@ -71,13 +71,13 @@ public class PauseScript : MonoBehaviour
                 }
                 if (!pause)
                 {
-                    //Turn On Player Controller Input Listeners
-                    CharacterController.instance.OnEnable();
                     //Turn Off Canvas elements
                     pauseCanvas.enabled = pause;
                     EventSystem.current.SetSelectedGameObject(null);
                     CursorManager.Instance.CursorOff();
                     pauseEvent.Invoke(pause);
+                    //Turn On Player Controller Input Listeners
+                    CharacterController.instance.OnEnable();
                 }
             }
         }

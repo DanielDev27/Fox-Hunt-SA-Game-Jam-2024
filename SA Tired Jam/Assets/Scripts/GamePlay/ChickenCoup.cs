@@ -46,7 +46,7 @@ public class ChickenCoup : MonoBehaviour
             }
             if (chickensRemaining <= 0)
             {
-                noiseCollider.radius -= Time.deltaTime*3;
+                noiseCollider.radius -= Time.deltaTime * 3;
             }
         }
         //Debug
@@ -97,12 +97,15 @@ public class ChickenCoup : MonoBehaviour
 
     void OnChickenLost()
     {
-        chickensRemaining -= 1;
-        if (chickensRemaining <= 0)
+        if (foxInCoup)
         {
-            gatheringFood = false;
-            foodCount?.Invoke(gatheringFood);
-            EndCoupNoise();
+            chickensRemaining -= 1;
+            if (chickensRemaining <= 0)
+            {
+                gatheringFood = false;
+                foodCount?.Invoke(gatheringFood);
+                EndCoupNoise();
+            }
         }
     }
 }

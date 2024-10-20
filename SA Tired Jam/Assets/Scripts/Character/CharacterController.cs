@@ -193,11 +193,6 @@ public class CharacterController : MonoBehaviour
         {
             isMoving = false;
             moveInput = Vector2.zero;
-            OnDisable();
-        }
-        else
-        {
-            OnEnable();
         }
     }
 
