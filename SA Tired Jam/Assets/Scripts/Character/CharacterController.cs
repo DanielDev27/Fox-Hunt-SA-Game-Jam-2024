@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -159,12 +158,12 @@ public class CharacterController : MonoBehaviour
             {
                 Debug.Log("Fox is entering Chicken Coup");
                 isInCoup = true;
-                chickenCoup[0].gameObject.GetComponent<ChickenCoup>().BeginCoupNoise();
+                chickenCoup[0].gameObject.GetComponent<ChickenCoup>().FoxEnterCoup();
             }
             else
             {
                 Debug.Log("Fox is exiting Chicken Coup");
-                chickenCoup[0].gameObject.GetComponent<ChickenCoup>().EndCoupNoise();
+                chickenCoup[0].gameObject.GetComponent<ChickenCoup>().FoxExitCoup();
                 isInCoup = false;
             }
         }

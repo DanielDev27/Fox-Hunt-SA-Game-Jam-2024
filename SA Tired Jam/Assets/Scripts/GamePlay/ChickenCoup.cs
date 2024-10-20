@@ -1,39 +1,93 @@
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ChickenCoup : MonoBehaviour
 {
     [Header("Debug")]
     [SerializeField] bool foxInCoup = false;
+    [SerializeField] float chickensRemaining;
     [Header("References")]
     [SerializeField] SphereCollider noiseCollider;
     [Header("Settings")]
     [SerializeField] float MaxNoiseRadius;
+    [SerializeField] float chickensTotal;
+    //Event
+    public static UnityEvent<bool> foodCount = new UnityEvent<bool>();
+    //Value
+    public static bool gatheringFood;
     void Start()
     {
         noiseCollider.radius = 0;
+        chickensRemaining = chickensTotal;
+    }
+    private void OnEnable()
+    {
+        FoodTracker.LoseChicken.AddListener(OnChickenLost);
+    }
+    private void OnDisable()
+    {
+        FoodTracker.LoseChicken.RemoveListener(OnChickenLost);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (foxInCoup && noiseCollider.radius < MaxNoiseRadius)
+        if (foxInCoup && noiseCollider.radius < MaxNoiseRadius && chickensRemaining > 0)
         {
             noiseCollider.radius += Time.deltaTime;
         }
-        if (!foxInCoup && noiseCollider.radius > 0)
+        if (noiseCollider.radius > 0)
         {
-            noiseCollider.radius -= Time.deltaTime;
+            if (!foxInCoup || chickensRemaining <= 0)
+            {
+                noiseCollider.radius -= Time.deltaTime;
+            }
         }
     }
-    public void BeginCoupNoise()
+    public void FoxEnterCoup()
     {
-        Debug.Log("Begin Coup Noise");
         foxInCoup = true;
+        if (chickensRemaining > 1)
+        {
+            BeginCoupNoise();
+        }
     }
-
-    public void EndCoupNoise()
+    void BeginCoupNoise()
+    {
+        if (chickensRemaining > 0)
+        {
+            Debug.Log("Begin Coup Noise");
+            gatheringFood = foxInCoup;
+            foodCount?.Invoke(gatheringFood);
+        }
+    }
+    public void FoxExitCoup()
+    {
+        foxInCoup = false;
+        EndCoupNoise();
+    }
+    void EndCoupNoise()
     {
         Debug.Log("End Coup Noise");
-        foxInCoup = false;
+        if (chickensRemaining > 0)
+        {
+            gatheringFood = foxInCoup;
+            foodCount?.Invoke(gatheringFood);
+        }
+        else
+        {
+            gatheringFood = false;
+        }
+    }
+
+    void OnChickenLost()
+    {
+        chickensRemaining -= 1;
+        if (chickensRemaining <= 0)
+        {
+            gatheringFood = false;
+            foodCount?.Invoke(gatheringFood);
+            EndCoupNoise();
+        }
     }
 }

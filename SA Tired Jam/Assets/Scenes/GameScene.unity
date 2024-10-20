@@ -628,6 +628,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 940109473}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1015396529
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1015396531}
+  - component: {fileID: 1015396532}
+  m_Layer: 0
+  m_Name: Managers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1015396531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015396529}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1015396532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015396529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5dfc5077add44d4695cbf4dfd5e078a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gatheringFood: 0
+  food: 0
+  foodAmount: 0
+  foodCollectionModifier: 0.4
 --- !u!1 &1214691754
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,8 +848,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7acc71929567ae6488c788513d2d23f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxNoiseRadius: 15
+  foxInCoup: 0
+  chickensRemaining: 0
   noiseCollider: {fileID: 1891720596}
+  MaxNoiseRadius: 15
+  chickensTotal: 10
 --- !u!1 &1277611498
 GameObject:
   m_ObjectHideFlags: 0
@@ -1961,6 +2012,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 53870733}
   - {fileID: 28902910}
+  - {fileID: 1015396531}
   - {fileID: 1834460271}
   - {fileID: 248375558}
   - {fileID: 3468744995106857150}
