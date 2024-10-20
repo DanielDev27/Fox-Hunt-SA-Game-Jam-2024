@@ -417,7 +417,7 @@ MonoBehaviour:
   chickenCoup: []
   Health: 0
   foxRB: {fileID: 7694845555980105889}
-  foxGO: {fileID: 8465008486904738266}
+  foxGO: {fileID: 3945088843030913195}
   foxAnim: {fileID: 0}
   playerInput: {fileID: 4562427211360623759}
   noiseCollider: {fileID: 6067265863877626017}
