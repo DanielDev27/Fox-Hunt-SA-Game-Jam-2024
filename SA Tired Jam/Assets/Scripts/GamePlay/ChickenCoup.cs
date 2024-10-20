@@ -6,6 +6,7 @@ public class ChickenCoup : MonoBehaviour
 {
     [Header("Debug")]
     [SerializeField] bool foxInCoup = false;
+    [SerializeField] bool makingNoise;
     [SerializeField] float chickensRemaining;
     [Header("References")]
     [SerializeField] SphereCollider noiseCollider;
@@ -16,6 +17,7 @@ public class ChickenCoup : MonoBehaviour
     public static UnityEvent<bool> foodCount = new UnityEvent<bool>();
     //Value
     public static bool gatheringFood;
+
     void Start()
     {
         noiseCollider.radius = 0;
@@ -38,10 +40,23 @@ public class ChickenCoup : MonoBehaviour
         }
         if (noiseCollider.radius > 0)
         {
-            if (!foxInCoup || chickensRemaining <= 0)
+            if (!foxInCoup)
             {
                 noiseCollider.radius -= Time.deltaTime;
             }
+            if (chickensRemaining <= 0)
+            {
+                noiseCollider.radius -= Time.deltaTime*3;
+            }
+        }
+        //Debug
+        if (noiseCollider.radius > 0)
+        {
+            makingNoise = true;
+        }
+        else
+        {
+            makingNoise = false;
         }
     }
     public void FoxEnterCoup()

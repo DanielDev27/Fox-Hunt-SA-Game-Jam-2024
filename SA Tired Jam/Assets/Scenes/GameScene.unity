@@ -361,6 +361,11 @@ Transform:
   - {fileID: 40809567}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &355839654 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3945088843030913195, guid: 35425e905bc88e24e8d41fecde50ae2d, type: 3}
+  m_PrefabInstance: {fileID: 3468744995106857150}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &628349444
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,6 +854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foxInCoup: 0
+  makingNoise: 0
   chickensRemaining: 0
   noiseCollider: {fileID: 1891720596}
   MaxNoiseRadius: 15
@@ -1768,6 +1774,10 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 28902912}
+    - target: {fileID: 8290951192138740766, guid: 35425e905bc88e24e8d41fecde50ae2d, type: 3}
+      propertyPath: foxGO
+      value: 
+      objectReference: {fileID: 355839654}
     - target: {fileID: 8465008486904738266, guid: 35425e905bc88e24e8d41fecde50ae2d, type: 3}
       propertyPath: m_Name
       value: Character

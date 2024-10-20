@@ -65,21 +65,30 @@ public class CharacterController : MonoBehaviour
     {
         FoxInputHandler.Enable();
         //Debug.Log("Initialized");
-        FoxInputHandler.OnMovePerformed.AddListener(InputMove);
-        FoxInputHandler.OnCrouchPerformed.AddListener(OnCrouch);
-        FoxInputHandler.OnSprintPerformed.AddListener(OnSprint);
+        EnableMovement();
         FoxInputHandler.OnInteractPerformed.AddListener(OnInteract);
     }
     public void OnDisable()
     {
-        FoxInputHandler.OnMovePerformed.RemoveListener(InputMove);
-        FoxInputHandler.OnCrouchPerformed.RemoveListener(OnCrouch);
-        FoxInputHandler.OnSprintPerformed.RemoveListener(OnSprint);
+        DisableMovement();
         FoxInputHandler.OnInteractPerformed.RemoveListener(OnInteract);
     }
     void OnDestroy()
     {
         PauseScript.Instance.pauseEvent.RemoveListener(OnPause);
+    }
+
+    void EnableMovement()
+    {
+        FoxInputHandler.OnMovePerformed.AddListener(InputMove);
+        FoxInputHandler.OnCrouchPerformed.AddListener(OnCrouch);
+        FoxInputHandler.OnSprintPerformed.AddListener(OnSprint);
+    }
+    void DisableMovement()
+    {
+        FoxInputHandler.OnMovePerformed.RemoveListener(InputMove);
+        FoxInputHandler.OnCrouchPerformed.RemoveListener(OnCrouch);
+        FoxInputHandler.OnSprintPerformed.RemoveListener(OnSprint);
     }
 
     private void Update()
@@ -159,12 +168,16 @@ public class CharacterController : MonoBehaviour
                 Debug.Log("Fox is entering Chicken Coup");
                 isInCoup = true;
                 chickenCoup[0].gameObject.GetComponent<ChickenCoup>().FoxEnterCoup();
+                DisableMovement();
+                foxGO.SetActive(false);
             }
             else
             {
                 Debug.Log("Fox is exiting Chicken Coup");
                 chickenCoup[0].gameObject.GetComponent<ChickenCoup>().FoxExitCoup();
                 isInCoup = false;
+                EnableMovement();
+                foxGO.SetActive(true);
             }
         }
         else if (isInteract && chickenCoup.Count == 0)
