@@ -14,6 +14,7 @@ public class DogActions : MonoBehaviour
     [SerializeField] Rigidbody dogRB;
     public ActionObject currentActionObject;
     public float remainingDistance;
+    public Transform currentTarget;
     public bool isIdle;
     public bool isMoving;
     public bool isRunning;
