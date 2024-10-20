@@ -118,6 +118,42 @@ public class DogActions : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 11)
+        {
+            //Debug.Log("Dog can hear noise");
+            if (other.gameObject.GetComponentInParent<CharacterController>() != null)
+            {
+                foxTarget = true;
+                foxTransform = other.gameObject.GetComponentInParent<CharacterController>().transform;
+            }
+            if (other.gameObject.GetComponentInParent<ChickenCoup>() != null)
+            {
+                //Target is Coup
+                coupTarget = true;
+                chickenCoup = other.gameObject.GetComponentInParent<ChickenCoup>();
+                coupTransform = other.gameObject.GetComponentInParent<ChickenCoup>().transform;
+            }
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 11)
+        {
+            if (other.gameObject.GetComponentInParent<CharacterController>() != null)
+            {
+                foxTarget = false;
+                foxTransform = null;
+            }
+            if (other.gameObject.GetComponentInParent<ChickenCoup>() != null)
+            {
+                coupTarget = false;
+                coupTransform = null;
+            }
+        }
+    }
+
     //Create ID
     [ContextMenu("Generate guid for ID")]
     void GenerateGuid()
