@@ -58,7 +58,7 @@ public class CharacterController : MonoBehaviour
     }
     private void Start()
     {
-        PauseScript.Instance.pauseEvent.AddListener(OnPause);
+        PauseScript.Instance?.pauseEvent.AddListener(OnPause);
     }
 
     public void OnEnable()
@@ -75,7 +75,7 @@ public class CharacterController : MonoBehaviour
     }
     void OnDestroy()
     {
-        PauseScript.Instance.pauseEvent.RemoveListener(OnPause);
+        PauseScript.Instance?.pauseEvent.RemoveListener(OnPause);
     }
 
     void EnableMovement()

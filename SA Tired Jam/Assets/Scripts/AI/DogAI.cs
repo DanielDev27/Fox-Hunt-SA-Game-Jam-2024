@@ -28,6 +28,7 @@ public class DogAI : ActionObject
         dogActions.fox = CharacterController.instance;
         dogActions.foxTransform = null;
         dogActions.canHearFox = false;
+        dogActions.foxDistance = Vector3.Distance(dogActions.fox.gameObject.transform.position, dogActions.transform.position);
         //Actions List
         actions = new List<Action>{
             new IdleAction(),
@@ -42,10 +43,7 @@ public class DogAI : ActionObject
         dogActions.StartCoroutine(UtilitySystemCoroutine());
     }
 
-    public override void Update()
-    {
-        dogActions.remainingDistance = dogActions.navAgent.remainingDistance;
-    }
+    public override void Update() { }
     public override void FixedUpdate() { }
     public override void OnDrawGizmos() { }
     IEnumerator UtilitySystemCoroutine()
@@ -79,6 +77,8 @@ public class DogAI : ActionObject
     {
         dogActions.endLevel = true;
     }
+
+    
 }
 
 public class IdleAction : Action
@@ -105,6 +105,9 @@ public class IdleAction : Action
         actionObject.dogActions.isAttacking = false;
 
         //Actions
+        ((DogAI)actionObject).dogActions.remainingDistance = ((DogAI)actionObject).dogActions.navAgent.remainingDistance;
+        ((DogAI)actionObject).dogActions.foxDistance = Vector3.Distance(((DogAI)actionObject).dogActions.fox.gameObject.transform.position,
+        ((DogAI)actionObject).dogActions.transform.position);
         if (actionObject.dogActions.remainingDistance < 0.01f && !actionObject.dogActions.aiClear)
         {
             while (((DogAI)actionObject).dogActions.counter < 5)
@@ -162,6 +165,9 @@ public class PatrolAction : Action
         actionObject.dogActions.isAttacking = false;
 
         //Actions
+        ((DogAI)actionObject).dogActions.remainingDistance = ((DogAI)actionObject).dogActions.navAgent.remainingDistance;
+        ((DogAI)actionObject).dogActions.foxDistance = Vector3.Distance(((DogAI)actionObject).dogActions.fox.gameObject.transform.position,
+        ((DogAI)actionObject).dogActions.transform.position);
         actionObject.dogActions.navAgent.isStopped = false;
         actionObject.dogActions.navAgent.SetDestination
         (actionObject.dogActions.patrolPoints[actionObject.dogActions.patrolIndex].position);
@@ -180,7 +186,15 @@ public class PatrolAction : Action
 
     public override void Execute(ActionObject actionObject)
     {
-        throw new System.NotImplementedException();
+    //Debug bools
+        actionObject.dogActions.isIdle = false;
+        actionObject.dogActions.isMoving = false;
+        actionObject.dogActions.isRunning = true;
+        actionObject.dogActions.isAttacking = false;
+        
+        ((DogAI)actionObject).dogActions.remainingDistance = ((DogAI)actionObject).dogActions.navAgent.remainingDistance;
+        ((DogAI)actionObject).dogActions.foxDistance = Vector3.Distance(((DogAI)actionObject).dogActions.fox.gameObject.transform.position,
+        ((DogAI)actionObject).dogActions.transform.position);
     }
 }
 public class AttackAction : Action
@@ -192,6 +206,14 @@ public class AttackAction : Action
 
     public override void Execute(ActionObject actionObject)
     {
-        throw new System.NotImplementedException();
+    //Debug bools
+        actionObject.dogActions.isIdle = false;
+        actionObject.dogActions.isMoving = true;
+        actionObject.dogActions.isRunning = false;
+        actionObject.dogActions.isAttacking = false;
+
+        ((DogAI)actionObject).dogActions.remainingDistance = ((DogAI)actionObject).dogActions.navAgent.remainingDistance;
+        ((DogAI)actionObject).dogActions.foxDistance = Vector3.Distance(((DogAI)actionObject).dogActions.fox.gameObject.transform.position,
+        ((DogAI)actionObject).dogActions.transform.position);
     }
 }*/

@@ -32,6 +32,7 @@ public class DogActions : MonoBehaviour
     [SerializeField] bool isActive = true;
     public int patrolIndex;
     public float patrolSpeed;
+    public float chaseSpeed;
     public Transform endLevelPoint;
     [Header("References")]
     public Animator dogAnimator;
@@ -105,6 +106,29 @@ public class DogActions : MonoBehaviour
         if (collision.gameObject.layer == 10)
         {
             Physics.IgnoreCollision(collision.collider, this.gameObject.GetComponent<Collider>());
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 11)
+        {
+            Debug.Log("Dog can hear noise");
+            if (other.gameObject.GetComponentInParent<CharacterController>() != null)
+            {
+                foxTransform = other.gameObject.GetComponentInParent<CharacterController>().transform;
+            }
+            else
+            {
+                //Target is Coup
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 11)
+        {
+            foxTransform = null;
         }
     }
 
