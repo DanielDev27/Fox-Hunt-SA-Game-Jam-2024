@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 //using UnityEngine.Serialization;
@@ -17,16 +18,24 @@ public class DogActions : MonoBehaviour
     public bool isMoving;
     public bool isRunning;
     public bool isAttacking;
-    public bool canHearFox;
+    public bool canHearNoise;
     public bool endLevel = false;
     public bool aiClear = false;
 
     [Header("Debug - Fox")]
+    public bool foxTarget = false;
     public CharacterController fox;
     public Vector3 foxPosition;
     public Transform foxTransform;
     public Vector3 foxDirection;
     public float foxDistance;
+    [Header("Debug - Coup")]
+    public bool coupTarget = false;
+    public ChickenCoup chickenCoup;
+    public Vector3 coupPosition;
+    public Transform coupTransform;
+    public Vector3 coupDirection;
+    public float coupDistance;
     [Header("Settings - Movement")]
     public List<Transform> patrolPoints = new List<Transform>();
     [SerializeField] bool isActive = true;
@@ -106,29 +115,6 @@ public class DogActions : MonoBehaviour
         if (collision.gameObject.layer == 10)
         {
             Physics.IgnoreCollision(collision.collider, this.gameObject.GetComponent<Collider>());
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == 11)
-        {
-            Debug.Log("Dog can hear noise");
-            if (other.gameObject.GetComponentInParent<CharacterController>() != null)
-            {
-                foxTransform = other.gameObject.GetComponentInParent<CharacterController>().transform;
-            }
-            else
-            {
-                //Target is Coup
-            }
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer == 11)
-        {
-            foxTransform = null;
         }
     }
 

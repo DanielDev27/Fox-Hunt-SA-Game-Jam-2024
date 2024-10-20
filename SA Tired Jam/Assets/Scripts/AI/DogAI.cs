@@ -26,9 +26,12 @@ public class DogAI : ActionObject
         dogActions.counter = 0;
         //Fox Identifier @ Start
         dogActions.fox = CharacterController.instance;
+        dogActions.chickenCoup = FindAnyObjectByType<ChickenCoup>();
         dogActions.foxTransform = null;
-        dogActions.canHearFox = false;
+        dogActions.coupTransform = null;
+        dogActions.canHearNoise = false;
         dogActions.foxDistance = Vector3.Distance(dogActions.fox.gameObject.transform.position, dogActions.transform.position);
+        dogActions.coupDistance = Vector3.Distance(dogActions.chickenCoup.gameObject.transform.position, dogActions.transform.position);
         //Actions List
         actions = new List<Action>{
             new IdleAction(),
@@ -43,7 +46,18 @@ public class DogAI : ActionObject
         dogActions.StartCoroutine(UtilitySystemCoroutine());
     }
 
-    public override void Update() { }
+    public override void Update()
+    {
+        dogActions.remainingDistance = dogActions.navAgent.remainingDistance;
+        if (dogActions.foxTarget)
+        {
+            dogActions.foxDistance = Vector3.Distance(dogActions.fox.gameObject.transform.position, dogActions.transform.position);
+        }
+        if (dogActions.coupTarget)
+        {
+            dogActions.coupDistance = Vector3.Distance(dogActions.chickenCoup.gameObject.transform.position, dogActions.transform.position);
+        }
+    }
     public override void FixedUpdate() { }
     public override void OnDrawGizmos() { }
     IEnumerator UtilitySystemCoroutine()
@@ -77,8 +91,58 @@ public class DogAI : ActionObject
     {
         dogActions.endLevel = true;
     }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 11)
+        {
+            //Debug.Log("Dog can hear noise");
+            if (other.gameObject.GetComponentInParent<CharacterController>() != null)
+            {
+                dogActions.foxTarget = true;
+                dogActions.foxTransform = other.gameObject.GetComponentInParent<CharacterController>().transform;
+            }
+            if (other.gameObject.GetComponentInParent<ChickenCoup>() != null)
+            {
+                //Target is Coup
+                dogActions.coupTarget = true;
+                dogActions.chickenCoup = null;
+                dogActions.coupTransform = null;
+                dogActions.chickenCoup = other.gameObject.GetComponentInParent<ChickenCoup>();
+                dogActions.coupTransform = other.gameObject.GetComponentInParent<ChickenCoup>().transform;
+            }
+        }
+    }
 
-    
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer == 11)
+        {
+            if (other.gameObject.GetComponentInParent<ChickenCoup>() != null)
+            {
+                //Target is Coup
+                //coupTarget = true;
+                dogActions.chickenCoup = other.gameObject.GetComponentInParent<ChickenCoup>();
+                dogActions.coupTransform = other.gameObject.GetComponentInParent<ChickenCoup>().transform;
+            }
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 11)
+        {
+            if (other.gameObject.GetComponentInParent<CharacterController>() != null)
+            {
+                dogActions.foxTarget = false;
+                dogActions.foxTransform = null;
+            }
+            if (other.gameObject.GetComponentInParent<ChickenCoup>() != null)
+            {
+                dogActions.coupTarget = false;
+                dogActions.coupTransform = null;
+            }
+        }
+    }
+
 }
 
 public class IdleAction : Action
@@ -105,9 +169,7 @@ public class IdleAction : Action
         actionObject.dogActions.isAttacking = false;
 
         //Actions
-        ((DogAI)actionObject).dogActions.remainingDistance = ((DogAI)actionObject).dogActions.navAgent.remainingDistance;
-        ((DogAI)actionObject).dogActions.foxDistance = Vector3.Distance(((DogAI)actionObject).dogActions.fox.gameObject.transform.position,
-        ((DogAI)actionObject).dogActions.transform.position);
+        ((DogAI)actionObject).Update();
         if (actionObject.dogActions.remainingDistance < 0.01f && !actionObject.dogActions.aiClear)
         {
             while (((DogAI)actionObject).dogActions.counter < 5)
@@ -165,9 +227,7 @@ public class PatrolAction : Action
         actionObject.dogActions.isAttacking = false;
 
         //Actions
-        ((DogAI)actionObject).dogActions.remainingDistance = ((DogAI)actionObject).dogActions.navAgent.remainingDistance;
-        ((DogAI)actionObject).dogActions.foxDistance = Vector3.Distance(((DogAI)actionObject).dogActions.fox.gameObject.transform.position,
-        ((DogAI)actionObject).dogActions.transform.position);
+        ((DogAI)actionObject).Update();
         actionObject.dogActions.navAgent.isStopped = false;
         actionObject.dogActions.navAgent.SetDestination
         (actionObject.dogActions.patrolPoints[actionObject.dogActions.patrolIndex].position);
@@ -186,18 +246,18 @@ public class PatrolAction : Action
 
     public override void Execute(ActionObject actionObject)
     {
-    //Debug bools
+        //Debug bools
         actionObject.dogActions.isIdle = false;
         actionObject.dogActions.isMoving = false;
         actionObject.dogActions.isRunning = true;
         actionObject.dogActions.isAttacking = false;
-        
+
         ((DogAI)actionObject).dogActions.remainingDistance = ((DogAI)actionObject).dogActions.navAgent.remainingDistance;
         ((DogAI)actionObject).dogActions.foxDistance = Vector3.Distance(((DogAI)actionObject).dogActions.fox.gameObject.transform.position,
         ((DogAI)actionObject).dogActions.transform.position);
     }
-}
-public class AttackAction : Action
+}*/
+/*public class AttackAction : Action
 {
     public override float Evaluate(ActionObject actionObject)
     {

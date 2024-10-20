@@ -165,7 +165,7 @@ public class CharacterController : MonoBehaviour
         {
             if (!isInCoup)
             {
-                Debug.Log("Fox is entering Chicken Coup");
+                //Debug.Log("Fox is entering Chicken Coup");
                 isInCoup = true;
                 chickenCoup[0].gameObject.GetComponent<ChickenCoup>().FoxEnterCoup();
                 DisableMovement();
@@ -173,7 +173,7 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Fox is exiting Chicken Coup");
+                //Debug.Log("Fox is exiting Chicken Coup");
                 chickenCoup[0].gameObject.GetComponent<ChickenCoup>().FoxExitCoup();
                 isInCoup = false;
                 EnableMovement();
@@ -182,7 +182,7 @@ public class CharacterController : MonoBehaviour
         }
         else if (isInteract && chickenCoup.Count == 0)
         {
-            Debug.Log("There is nothing to interact with");
+            //Debug.Log("There is nothing to interact with");
         }
     }
 
@@ -201,13 +201,13 @@ public class CharacterController : MonoBehaviour
     {
         if (other.gameObject.layer == 7)
         {
-            Debug.Log("Fox has entered into a trap");
+            //Debug.Log("Fox has entered into a trap");
             //Trap needs to affect the Player's speed for X time
             StartCoroutine(Trapped());
         }
         if (other.gameObject.layer == 9)
         {
-            Debug.Log("Fox is close to a Chicken Coup");
+            //Debug.Log("Fox is close to a Chicken Coup");
             //Character needs to recognize that there's a Chicken Coup, and can interact with it
             chickenCoup.Add(other.gameObject);
         }
@@ -216,7 +216,7 @@ public class CharacterController : MonoBehaviour
     {
         if (other.gameObject.layer == 9)
         {
-            Debug.Log("Fox has left a Chicken Coup");
+            //Debug.Log("Fox has left a Chicken Coup");
             //Character needs to recognize that there's a Chicken Coup, and can interact with it
             chickenCoup.Remove(other.gameObject);
         }
