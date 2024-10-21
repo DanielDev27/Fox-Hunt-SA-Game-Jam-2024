@@ -1,7 +1,10 @@
-Buildings [R-D]:
+Buildings:
 
 Barn x1
 Coops x2
 Kennels x3
 Houses x2
+
+Obstacle:
+Trap x1
 
