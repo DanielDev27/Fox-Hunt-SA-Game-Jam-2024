@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 public class FoodTracker : MonoBehaviour
 {
+    public static FoodTracker instance;
     [Header("Debug")]
     [SerializeField] bool gatheringFood = false;
     [SerializeField] float food;
@@ -16,6 +17,10 @@ public class FoodTracker : MonoBehaviour
     //UI
     [Header("UI References")]
     [SerializeField] TMP_Text foodText;
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         foodAmount = 0;
@@ -53,8 +58,11 @@ public class FoodTracker : MonoBehaviour
 
     public void DropFood()
     {
-        foodAmount--;
-        foodText.text = "Food: " + foodAmount.ToString();
+        if (foodAmount >= 1)
+        {
+            foodAmount--;
+            foodText.text = "Food: " + foodAmount.ToString();
+        }
     }
 
     public void FoodHome()

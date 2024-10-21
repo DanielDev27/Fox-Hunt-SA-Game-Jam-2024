@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,7 +22,6 @@ public class DogAI : ActionObject
     public override void OnDisable() { }
     public override void Start()
     {
-        dogActions.counter = 0;
         //Fox Identifier @ Start
         dogActions.fox = CharacterController.instance;
         dogActions.chickenCoup = FindAnyObjectByType<ChickenCoup>();
@@ -37,7 +35,7 @@ public class DogAI : ActionObject
             new IdleAction(),
             new PatrolAction(),
             new ChaseAction(),
-            //new AttackAction(),
+            new AttackAction(),
         };
         //Patrol Movement
         dogActions.currentTarget = dogActions.patrolPoints[dogActions.patrolIndex];
@@ -45,6 +43,7 @@ public class DogAI : ActionObject
         dogActions.remainingDistance = dogActions.navAgent.remainingDistance;
         //UtilitySystem
         dogActions.StartCoroutine(UtilitySystemCoroutine());
+        dogActions.counter = 0;
     }
 
     public override void Update()
@@ -203,7 +202,14 @@ public class ChaseAction : Action
     {
         if (((DogAI)actionObject).dogActions.foxTarget || ((DogAI)actionObject).dogActions.coupTarget)
         {
-            return 10;
+            if (((DogAI)actionObject).dogActions.remainingDistance <= 1.1f)
+            {
+                return 0f;
+            }
+            else
+            {
+                return 10;
+            }
         }
         else
         {
@@ -241,23 +247,41 @@ public class ChaseAction : Action
 
     }
 }
-/*public class AttackAction : Action
+public class AttackAction : Action
 {
     public override float Evaluate(ActionObject actionObject)
     {
-        throw new System.NotImplementedException();
+        if (((DogAI)actionObject).dogActions.foxTarget)
+        {
+            if (((DogAI)actionObject).dogActions.remainingDistance <= 1.1f)
+            {
+                return 10;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        else return 0;
     }
 
     public override void Execute(ActionObject actionObject)
     {
-    //Debug bools
+        //Debug bools
         actionObject.dogActions.isIdle = false;
-        actionObject.dogActions.isMoving = true;
+        actionObject.dogActions.isMoving = false;
         actionObject.dogActions.isRunning = false;
-        actionObject.dogActions.isAttacking = false;
-
-        ((DogAI)actionObject).dogActions.remainingDistance = ((DogAI)actionObject).dogActions.navAgent.remainingDistance;
-        ((DogAI)actionObject).dogActions.foxDistance = Vector3.Distance(((DogAI)actionObject).dogActions.fox.gameObject.transform.position,
-        ((DogAI)actionObject).dogActions.transform.position);
+        actionObject.dogActions.isAttacking = true;
+        if (((DogAI)actionObject).dogActions.counter == 0)
+        {
+            FoodTracker.instance.DropFood();
+        }
+        while (((DogAI)actionObject).dogActions.counter < 2)
+        {
+            ((DogAI)actionObject).dogActions.counter += ((DogAI)actionObject).updateFrequency;
+            //Debug.Log(((DogAI)actionObject).dogActions.counter);
+            return;
+        }
+        ((DogAI)actionObject).dogActions.counter = 0;
     }
-}*/
+}
