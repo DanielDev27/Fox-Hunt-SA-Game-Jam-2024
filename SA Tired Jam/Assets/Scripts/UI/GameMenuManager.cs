@@ -1,14 +1,20 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameMenuManager : MonoBehaviour
 {
     public static GameMenuManager instance;
     [Header("Debug")]
+    public bool gameActive = true;
     [SerializeField] bool check;
+    [SerializeField] float currentGameTime;
+    [SerializeField] float totalGameTime;
+
     [Header("References - Objects")]
     [Header("References - UI")]
+    [SerializeField] Image timerImage;
     [SerializeField] Canvas pauseCanvas;
     [SerializeField] Canvas controlsCanvas;
     [SerializeField] Canvas endWin;
@@ -19,9 +25,31 @@ public class GameMenuManager : MonoBehaviour
     [SerializeField] GameObject winFirst;
     [SerializeField] GameObject loseFirst;
 
+    private void Awake()
+    {
+        instance = this;
+        gameActive = true;
+    }
     private void Start()
     {
+        currentGameTime = 0;
         check = CursorManager.Instance.usingGamepad;
+    }
+    private void Update()
+    {
+        timerImage.fillAmount = 1 - currentGameTime / totalGameTime;
+        if (gameActive && currentGameTime < totalGameTime && !PauseScript.Instance.pause)
+        {
+            currentGameTime += Time.deltaTime;
+        }
+        if (gameActive && currentGameTime >= totalGameTime)
+        {
+            gameActive = false;
+            if (HungerTracker.instance.hunger > 0)
+            {
+                GameWin();
+            }
+        }
     }
     private void FixedUpdate()
     {
@@ -46,30 +74,28 @@ public class GameMenuManager : MonoBehaviour
             CursorManager.Instance.CursorOff();
         }
     }
-    /*public void GameWin()//Logic for winning the game - Triggered after each AI death
+    public void GameWin()//Logic for winning the game - Triggered after each AI death
     {
-        if ( <= 0)//Logic only completes if there are no more AIs
-        {
-            PauseScript.Instance.gameOver = true;
-            endWin.gameObject.SetActive(true);
-            endWin.enabled = true;
-            PlayerController.Instance.OnDisable();
-            CursorManager.Instance.InputDeviceUIAssign();
-            EventSystem.current.SetSelectedGameObject(winFirst);
-            aiParent.gameObject.SetActive(false);
-        }
+
+        PauseScript.Instance.gameOver = true;
+        endWin.gameObject.SetActive(true);
+        endWin.enabled = true;
+        CharacterController.instance.OnDisable();
+        CursorManager.Instance.InputDeviceUIAssign();
+        EventSystem.current.SetSelectedGameObject(winFirst);
+        //aiParent.gameObject.SetActive(false);
+
     }
     public void GameOver()//Logic for losing the game
     {
-        endFail.gameObject.SetActive(true);
+        endLose.gameObject.SetActive(true);
         PauseScript.Instance.gameOver = true;
-        camera2.gameObject.SetActive(true);
-        PlayerController.Instance.OnDisable();
+        CharacterController.instance.OnDisable();
         CursorManager.Instance.InputDeviceUIAssign();
-        endFail.enabled = true;
-        EventSystem.current.SetSelectedGameObject(lossFirst);
-        aiParent.gameObject.SetActive(false);
-    }*/
+        endLose.enabled = true;
+        EventSystem.current.SetSelectedGameObject(loseFirst);
+        //aiParent.gameObject.SetActive(false);
+    }
 
     public void GoToMain()//Change Scenes to the Main Menu
     {
