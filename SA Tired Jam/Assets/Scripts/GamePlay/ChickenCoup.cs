@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class ChickenCoup : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class ChickenCoup : MonoBehaviour
     [SerializeField] float chickensRemaining;
     [Header("References")]
     [SerializeField] SphereCollider noiseCollider;
+    [SerializeField] Image chickenCoupImage;
     [Header("Settings")]
     [SerializeField] float MaxNoiseRadius;
     [SerializeField] float chickensTotal;
@@ -21,6 +23,7 @@ public class ChickenCoup : MonoBehaviour
     {
         noiseCollider.radius = 0;
         chickensRemaining = chickensTotal;
+        chickenCoupImage.fillAmount = chickensRemaining / chickensTotal;
     }
     private void OnEnable()
     {
@@ -48,6 +51,7 @@ public class ChickenCoup : MonoBehaviour
                 noiseCollider.radius -= Time.deltaTime * 3;
             }
         }
+        chickenCoupImage.fillAmount = chickensRemaining / chickensTotal;
         //Debug
         if (noiseCollider.radius > 0)
         {

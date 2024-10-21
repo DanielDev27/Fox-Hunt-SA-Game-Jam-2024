@@ -2,15 +2,12 @@ using UnityEngine;
 
 public class HungerTracker : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public static HungerTracker instance;
+    public float foodStorage;
+    [SerializeField] float hunger;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        instance = this;
     }
 }

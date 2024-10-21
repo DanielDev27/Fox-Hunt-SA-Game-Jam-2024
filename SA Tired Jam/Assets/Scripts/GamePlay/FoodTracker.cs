@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,9 +12,14 @@ public class FoodTracker : MonoBehaviour
     [SerializeField] float foodCollectionModifier;
     //Events
     public static UnityEvent LoseChicken = new UnityEvent();
+
+    //UI
+    [Header("UI References")]
+    [SerializeField] TMP_Text foodText;
     private void Start()
     {
         foodAmount = 0;
+        foodText.text = "Food: " + foodAmount.ToString();
     }
     private void OnEnable()
     {
@@ -31,6 +37,7 @@ public class FoodTracker : MonoBehaviour
             if (food > foodAmount + 1)
             {
                 foodAmount = (int)food;
+                foodText.text = "Food: " + foodAmount.ToString();
                 LoseChicken?.Invoke();
             }
         }
@@ -42,5 +49,19 @@ public class FoodTracker : MonoBehaviour
         {
             food = foodAmount;
         }
+    }
+
+    public void DropFood()
+    {
+        foodAmount--;
+        foodText.text = "Food: " + foodAmount.ToString();
+    }
+
+    public void FoodHome()
+    {
+        HungerTracker.instance.foodStorage = foodAmount;
+        foodAmount = 0;
+        foodText.text = "Food: " + foodAmount.ToString();
+
     }
 }
