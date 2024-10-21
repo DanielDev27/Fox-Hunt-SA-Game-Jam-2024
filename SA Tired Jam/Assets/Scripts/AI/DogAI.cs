@@ -69,7 +69,6 @@ public class DogAI : ActionObject
         else
         {
             dogActions.remainingDistance = dogActions.navAgent.remainingDistance;
-
         }
     }
     public override void FixedUpdate() { }
@@ -132,10 +131,15 @@ public class IdleAction : Action
         actionObject.dogActions.isRunning = false;
         actionObject.dogActions.isAttacking = false;
 
+        //Animator
+        ((DogAI)actionObject).dogActions.dogAnimator.SetBool("DogSit", true);
+        ((DogAI)actionObject).dogActions.dogAnimator.SetBool("DogMove", false);
+
         //Actions
         ((DogAI)actionObject).Update();
         if (actionObject.dogActions.remainingDistance < 0.01f && !actionObject.dogActions.aiClear)
         {
+            ((DogAI)actionObject).dogActions.dogAnimator.SetBool("DogSit", false);
             while (((DogAI)actionObject).dogActions.counter < 5)
             {
                 ((DogAI)actionObject).dogActions.counter += ((DogAI)actionObject).updateFrequency;
@@ -153,7 +157,6 @@ public class IdleAction : Action
             actionObject.dogActions.navAgent.destination =
             actionObject.dogActions.patrolPoints[actionObject.dogActions.patrolIndex].position;
         }
-
     }
 }
 public class PatrolAction : Action
@@ -181,6 +184,10 @@ public class PatrolAction : Action
         actionObject.dogActions.isMoving = true;
         actionObject.dogActions.isRunning = false;
         actionObject.dogActions.isAttacking = false;
+
+        //Animator
+        ((DogAI)actionObject).dogActions.dogAnimator.SetBool("DogSit", false);
+        ((DogAI)actionObject).dogActions.dogAnimator.SetBool("DogMove", true);
 
         //Actions
         actionObject.dogActions.navAgent.isStopped = false;
@@ -224,6 +231,10 @@ public class ChaseAction : Action
         actionObject.dogActions.isMoving = false;
         actionObject.dogActions.isRunning = true;
         actionObject.dogActions.isAttacking = false;
+
+        //Animator
+        ((DogAI)actionObject).dogActions.dogAnimator.SetBool("DogSit", false);
+        ((DogAI)actionObject).dogActions.dogAnimator.SetBool("DogMove", true);
 
         //Actions
         if (((DogAI)actionObject).dogActions.foxTarget && !((DogAI)actionObject).dogActions.coupTarget)
@@ -272,6 +283,11 @@ public class AttackAction : Action
         actionObject.dogActions.isMoving = false;
         actionObject.dogActions.isRunning = false;
         actionObject.dogActions.isAttacking = true;
+
+        //Animator
+        ((DogAI)actionObject).dogActions.dogAnimator.SetBool("DogSit", false);
+        ((DogAI)actionObject).dogActions.dogAnimator.SetBool("DogMove", true);
+
         if (((DogAI)actionObject).dogActions.counter == 0)
         {
             FoodTracker.instance.DropFood();
