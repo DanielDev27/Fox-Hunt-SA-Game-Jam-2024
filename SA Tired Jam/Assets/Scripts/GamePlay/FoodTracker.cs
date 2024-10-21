@@ -67,7 +67,7 @@ public class FoodTracker : MonoBehaviour
 
     public void FoodHome()
     {
-        HungerTracker.instance.foodStorage = foodAmount;
+        HungerTracker.instance.foodStorage += foodAmount;
         foodAmount = 0;
         foodText.text = "Food: " + foodAmount.ToString();
 
