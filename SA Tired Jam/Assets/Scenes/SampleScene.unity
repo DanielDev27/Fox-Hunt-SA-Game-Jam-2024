@@ -351,6 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 465204041}
   - component: {fileID: 465204040}
+  - component: {fileID: 465204042}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -390,6 +391,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &465204042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465204039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c745cd7853d28e4682bbdd780e946d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodStorage: 0
+  hunger: 0
+  hungerAmount: {fileID: 1163881703}
 --- !u!1 &481852000
 GameObject:
   m_ObjectHideFlags: 0
@@ -1445,6 +1461,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73addedf30acc9547adae908f241b15a, type: 3}
+--- !u!114 &1163881703 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6665188778491657318, guid: 73addedf30acc9547adae908f241b15a, type: 3}
+  m_PrefabInstance: {fileID: 850406778}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1314790558
 GameObject:
   m_ObjectHideFlags: 0
@@ -1994,6 +2021,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
+  - {fileID: 1788018177}
   - {fileID: 619394802}
   - {fileID: 1314790563}
   - {fileID: 1941046484}
@@ -2005,4 +2033,3 @@ SceneRoots:
   - {fileID: 680076302}
   - {fileID: 850406778}
   - {fileID: 465204041}
-  - {fileID: 1788018177}
