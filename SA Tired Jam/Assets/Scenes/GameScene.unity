@@ -17996,7 +17996,7 @@ MonoBehaviour:
   food: 0
   foodAmount: 0
   foodCollectionModifier: 0.4
-  foodText: {fileID: 0}
+  foodText: {fileID: 1967379549}
 --- !u!1001 &1016191962
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33452,6 +33452,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3294427328562355510, guid: a28d93a45d343c04d91158f67e84507d, type: 3}
   m_PrefabInstance: {fileID: 1964267109}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1967379549 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7306948819650793187, guid: 73addedf30acc9547adae908f241b15a, type: 3}
+  m_PrefabInstance: {fileID: 3997168102043149383}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1977719654
 PrefabInstance:
   m_ObjectHideFlags: 0
