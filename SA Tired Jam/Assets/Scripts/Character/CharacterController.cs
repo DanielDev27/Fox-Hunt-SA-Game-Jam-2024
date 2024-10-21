@@ -59,6 +59,10 @@ public class CharacterController : MonoBehaviour
     private void Start()
     {
         PauseScript.Instance?.pauseEvent.AddListener(OnPause);
+        foxAnim.SetBool("FoxIdle", true);
+        foxAnim.SetBool("FoxFront", false);
+        foxAnim.SetBool("FoxBack", false);
+        foxAnim.SetBool("FoxSideRun", false);
     }
 
     public void OnEnable()
@@ -106,6 +110,11 @@ public class CharacterController : MonoBehaviour
         moveDirection = moveCombined.normalized;
         if (moveCombined != Vector3.zero && !isTrapped)
         {
+            foxAnim.SetBool("FoxIdle", false);
+            foxAnim.SetBool("FoxFront", true);
+            foxAnim.SetBool("FoxBack", false);
+            foxAnim.SetBool("FoxSideRun", false);
+
             if (isSneaking)
             {
                 speedMultiplier = crouchSpeed;
@@ -125,12 +134,20 @@ public class CharacterController : MonoBehaviour
         }
         else if (isTrapped)
         {
+            foxAnim.SetBool("FoxIdle", false);
+            foxAnim.SetBool("FoxFront", true);
+            foxAnim.SetBool("FoxBack", false);
+            foxAnim.SetBool("FoxSideRun", false);
             speedMultiplier = trapSpeed;
             noiseCollider.GetComponent<SphereCollider>().radius = trapNoiseRadius;
             foxRB.linearVelocity = new Vector3(moveDirection.x * speedMultiplier, 0, moveDirection.z * speedMultiplier);
         }
         else
         {
+            foxAnim.SetBool("FoxIdle", true);
+            foxAnim.SetBool("FoxFront", false);
+            foxAnim.SetBool("FoxBack", false);
+            foxAnim.SetBool("FoxSideRun", false);
             speedMultiplier = 0;
             foxRB.linearVelocity = Vector3.zero;
             noiseCollider.GetComponent<SphereCollider>().radius = 1;
